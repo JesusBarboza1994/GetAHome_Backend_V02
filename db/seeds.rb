@@ -48,6 +48,4 @@ puts "Create favorites and contacted"
   involved.save() if !find_involved
 end
 
-
-
-  puts "Finished"
+puts "Finished"
