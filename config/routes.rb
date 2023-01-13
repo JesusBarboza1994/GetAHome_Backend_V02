@@ -15,12 +15,14 @@ Rails.application.routes.draw do
   get '/properties/:id', to: 'properties#show'
   delete'/properties/:id', to: 'properties#destroy'
   patch '/properties/:id', to: 'properties#update'
+  get '/properties/:id/user', to: 'properties#get_user'
 
   get '/involved_properties', to: 'involved_properties#index'
   post '/involved_properties', to: 'involved_properties#create'
   patch '/involved_properties/:id', to: 'involved_properties#update'
   
   get '/my_properties', to: 'involved_properties#get_properties'
+  
 
   post '/login', to: 'sessions#create'
   delete'/logout', to: 'sessions#destroy'

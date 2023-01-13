@@ -1,6 +1,11 @@
 class PropertiesController < ApplicationController
-  before_action :require_login!, only: [:create, :destroy, :update]
+  before_action :require_login!, only: [:create, :destroy, :update, :get_user]
   before_action :set_s3_client
+
+  def get_user
+    @user = User.find(params[:id])
+    render json: @user.as_json(only: [:phone, :email, :name])
+  end
 
   def index
     @properties = Property.all
