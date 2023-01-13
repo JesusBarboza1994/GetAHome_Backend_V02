@@ -11,8 +11,7 @@ class CreateProperties < ActiveRecord::Migration[7.0]
       t.string :description
       t.integer :property_type
       t.boolean :status
-      t.string :maintenance
-      t.string :integer
+      t.integer :maintenance
       t.references :user, null: false, foreign_key: true
 
       t.timestamps

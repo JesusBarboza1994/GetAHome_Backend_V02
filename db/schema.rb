@@ -65,8 +65,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_12_215941) do
     t.string "description"
     t.integer "property_type"
     t.boolean "status"
-    t.string "maintenance"
-    t.string "integer"
+    t.integer "maintenance"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -77,7 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_12_215941) do
     t.string "name"
     t.string "email"
     t.string "phone"
-    t.string "user_type"
+    t.integer "user_type"
     t.string "password_digest"
     t.string "token"
     t.datetime "created_at", null: false
