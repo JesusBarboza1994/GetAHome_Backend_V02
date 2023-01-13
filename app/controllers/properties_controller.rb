@@ -7,8 +7,12 @@ class PropertiesController < ApplicationController
     properties_with_url = []
     @properties.each do |property|
       property_with_url = { property: property }
-      object = @s3.bucket("getahome").object(property.image.blob.key)
-      url = object.presigned_url(:get, expires_in: 3600)
+      if(property.image.attached?)
+        object = @s3.bucket("getahome").object(property.image.blob.key)
+        url = object.presigned_url(:get, expires_in: 3600)
+      else
+        url="sin imagen"
+      end
       property_with_url[:url] = url
       properties_with_url << property_with_url
     end
@@ -32,9 +36,12 @@ class PropertiesController < ApplicationController
   
   def show
     @property = Property.find(params[:id])
-    object = @s3.bucket("getahome").object(@property.image.blob.key)
-
-    render json: { property: @property, url: object.presigned_url(:get, expires_in: 3600) }
+    if @property.image.attached?
+      render json: { property: @property, url: "sin imagen" }
+    else
+      object = @s3.bucket("getahome").object(@property.image.blob.key)
+      render json: { property: @property, url: object.presigned_url(:get, expires_in: 3600) }
+    end
   end
   
   def update

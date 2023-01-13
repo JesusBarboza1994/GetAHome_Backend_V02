@@ -10,16 +10,24 @@ class InvolvedPropertiesController < ApplicationController
    
     @favorites.each do |favorite|
       favorite_with_url = { property: favorite }
-      object = @s3.bucket("getahome").object(favorite.image.blob.key)
-      url = object.presigned_url(:get, expires_in: 3600)
+      if favorite.image.attached?
+        url = "sin imagen"
+      else
+        object = @s3.bucket("getahome").object(favorite.image.blob.key)
+        url = object.presigned_url(:get, expires_in: 3600)
+      end
       favorite_with_url[:url] = url
       favorites_with_url << favorite_with_url
     end
 
     @contacts.each do |contact|
       contact_with_url = { property: contact }
-      object = @s3.bucket("getahome").object(contact.image.blob.key)
-      url = object.presigned_url(:get, expires_in: 3600)
+      if contact.image.attached?
+        url = "sin imagen"
+      else
+        object = @s3.bucket("getahome").object(contact.image.blob.key)
+        url = object.presigned_url(:get, expires_in: 3600)
+      end
       contact_with_url[:url] = url
       contacts_with_url << contact_with_url
     end
@@ -59,16 +67,24 @@ class InvolvedPropertiesController < ApplicationController
    
       active.each do |act|
         act_with_url = { property: act }
-        object = @s3.bucket("getahome").object(act.image.blob.key)
-        url = object.presigned_url(:get, expires_in: 3600)
+        if act.image.attached?
+          url = "sin imagen"
+        else
+          object = @s3.bucket("getahome").object(act.image.blob.key)
+          url = object.presigned_url(:get, expires_in: 3600)
+        end
         act_with_url[:url] = url
         active_with_url << act_with_url
       end
 
       closed.each do |clo|
         clo_with_url = { property: clo }
-        object = @s3.bucket("getahome").object(clo.image.blob.key)
-        url = object.presigned_url(:get, expires_in: 3600)
+        if clo.image.attached?
+          url = "sin imagen"
+        else
+          object = @s3.bucket("getahome").object(clo.image.blob.key)
+          url = object.presigned_url(:get, expires_in: 3600)
+        end
         clo_with_url[:url] = url
         closed_with_url << clo_with_url
       end
