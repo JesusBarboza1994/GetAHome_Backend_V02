@@ -23,11 +23,9 @@ class PropertiesController < ApplicationController
   def create
     @property = Property.new(property_params)
     @property.user_id = current_user.id
-    # 1: buyers
-    # 2: landlords
-    # @user = User.find(@property.user_id)
-
     if @property.save 
+      @property.image.attach(params[:image])  
+      puts "SALIOOOO" if @property.image.attached?
       render json: @property, status: :created
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -69,7 +67,7 @@ class PropertiesController < ApplicationController
   end
 
   def property_params
-    params.require(:property).permit(:bedrooms, :bathrooms, :area, :pet_allowed, 
-                                      :description, :price, :mode, :address, :property_type, :status, :maintenance)
+    params.require(:property).permit(:bedrooms, :bathrooms, :area, :pet_allowed,
+                                      :description, :price, :mode, :address, :property_type, :status, :maintenance, :image)
   end
 end

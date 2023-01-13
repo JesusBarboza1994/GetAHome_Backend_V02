@@ -36,8 +36,15 @@ class InvolvedPropertiesController < ApplicationController
   end
 
   def create
-    @involved_property = InvolvedProperty.new(property_params)
-    @involved_property.user = current_user
+    @property = Property.find(params[:id])
+    if InvolvedProperty.where(user:current_user, property:@property)
+      update
+    else
+      @involved_property = InvolvedProperty.new(
+      user: current_user, property: @property, favorite:property_params[:favorite], contacts: property_params[:contacts]
+      )
+    end
+    
     if @involved_property.save
       render json: @involved_property, status: :created
     else
@@ -46,14 +53,15 @@ class InvolvedPropertiesController < ApplicationController
   end
 
   def update
-    @involved_property = InvolvedProperty.find(params[:id])
+    @property = Property.find(params[:id])
+    involved_property = InvolvedProperty.where(user:current_user, property: @property)
     if !params[:contacts].nil?
-      @involved_property.contacts = params[:contacts]
+      involved_property.contacts = params[:contacts]
     elsif !params[:favorite].nil?
-      @involved_property.favorite = params[:favorite]
+      involved_property.favorite = params[:favorite]
     end
-    @involved_property.save
-    render json: @involved_property
+    involved_property.save
+    render json: involved_property
   end
 
   def get_properties
