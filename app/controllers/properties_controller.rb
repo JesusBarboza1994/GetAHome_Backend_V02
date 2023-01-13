@@ -29,9 +29,11 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
     @property.user_id = current_user.id
     if @property.save 
-      @property.image.attach(params[:property][:image])  
+      @property.image.attach(params[:property][:image])
       puts "SALIOOOO" if @property.image.attached?
-      render json: @property, status: :created
+      object = @s3.bucket("getahome").object(@property.image.blob.key)
+      url = object.presigned_url(:get, expires_in: 3600)
+      render json: {property:@property, url: url}, status: :created
     else
       render json: @property.errors, status: :unprocessable_entity
     end
