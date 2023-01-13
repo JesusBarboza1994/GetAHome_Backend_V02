@@ -37,46 +37,46 @@ class InvolvedPropertiesController < ApplicationController
   end
 
   def create
-    @property = Property.find(params[:id])
+    @property = Property.find(params[:property_id])
     inv = InvolvedProperty.where(user:current_user, property:@property)
-    p inv
     if !(inv.length === 0)
-      puts "update"
       update
     else
-      puts "create"
       if !params[:contacts].nil?
         @involved_property = InvolvedProperty.new(
-          user: current_user, property: @property, favorite:false, contacts: params[:contact])  
+          user: current_user, property: @property, favorite:false, contacts: params[:contacts])  
       elsif !params[:favorite].nil?
-
         @involved_property = InvolvedProperty.new(
           user: current_user, property: @property, favorite:params[:favorite], contacts: false)  
       end
+      if @involved_property.save
+        render json: @involved_property, status: :created
+      else
+        render json: @involved_property.errors, status: :unprocessable_entity
+      end
     end
     
-    if @involved_property.save
-      render json: @involved_property, status: :created
-    else
-      render json: @involved_property.errors, status: :unprocessable_entity
-    end
   end
 
   def update
-    @property = Property.find(params[:id])
-    puts "property"
-    p @property
-    puts "property2"
+    @property = Property.find(params[:property_id])
     involved_property = InvolvedProperty.where(user:current_user, property: @property)
-    puts "por ahi no"
+    # permitted = involved_property_params.permit(:contacts, :favorite, :property_id)
     p involved_property
     puts "por aquii"
     if !params[:contacts].nil?
-      involved_property.contacts = params[:contacts]
+      puts "contacts"
+
+      p params[:contacts]
+      p params[:involved_property]
+      involved_property.update(involved_property_params)
+      puts "fin"
     elsif !params[:favorite].nil?
-      involved_property.favorite = params[:favorite]
+      involved_property.update(involved_property_params)
+      
+      # involved_property.favorite = params[:favorite]
     end
-    involved_property.save
+    # involved_property.save
     render json: involved_property
   end
 
@@ -128,7 +128,7 @@ class InvolvedPropertiesController < ApplicationController
     render json: {error: "Actualiza la interacción, no crees una nueva"}
   end
 
-  def property_params
+  def involved_property_params
     params.require(:involved_property).permit(:contacts, :favorite, :property_id)
   end
 
