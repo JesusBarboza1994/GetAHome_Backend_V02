@@ -22,7 +22,6 @@ gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
-
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem 'active_model_serializers'
 gem "bcrypt", "~> 3.1.7"

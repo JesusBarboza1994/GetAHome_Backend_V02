@@ -24,7 +24,7 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
     @property.user_id = current_user.id
     if @property.save 
-      @property.image.attach(params[:image])  
+      @property.image.attach(params[:property][:image])  
       puts "SALIOOOO" if @property.image.attached?
       render json: @property, status: :created
     else
@@ -34,7 +34,7 @@ class PropertiesController < ApplicationController
   
   def show
     @property = Property.find(params[:id])
-    if @property.image.attached?
+    if !@property.image.attached?
       render json: { property: @property, url: "sin imagen" }
     else
       object = @s3.bucket("getahome").object(@property.image.blob.key)
@@ -60,7 +60,6 @@ class PropertiesController < ApplicationController
   private
 
   def set_s3_client
-
     @s3 = Aws::S3::Resource.new(region: "us-east-1",
       access_key_id: "AKIAYDOFGOCUH2II6ZMY",
       secret_access_key: "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")

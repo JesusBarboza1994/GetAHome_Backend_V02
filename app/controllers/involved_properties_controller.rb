@@ -4,13 +4,14 @@ class InvolvedPropertiesController < ApplicationController
   before_action :set_s3_client
   def index
     @favorites = current_user.properties.where(involved_properties: {favorite: true})
+    
     @contacts = current_user.properties.where(involved_properties: {contacts: true})
     favorites_with_url = []
     contacts_with_url = []
    
     @favorites.each do |favorite|
       favorite_with_url = { property: favorite }
-      if favorite.image.attached?
+      if !favorite.image.attached?
         url = "sin imagen"
       else
         object = @s3.bucket("getahome").object(favorite.image.blob.key)
@@ -22,7 +23,7 @@ class InvolvedPropertiesController < ApplicationController
 
     @contacts.each do |contact|
       contact_with_url = { property: contact }
-      if contact.image.attached?
+      if !contact.image.attached?
         url = "sin imagen"
       else
         object = @s3.bucket("getahome").object(contact.image.blob.key)
@@ -37,12 +38,21 @@ class InvolvedPropertiesController < ApplicationController
 
   def create
     @property = Property.find(params[:id])
-    if InvolvedProperty.where(user:current_user, property:@property)
+    inv = InvolvedProperty.where(property:@property)
+
+    if !(inv.length === 0)
       update
     else
-      @involved_property = InvolvedProperty.new(
-      user: current_user, property: @property, favorite:property_params[:favorite], contacts: property_params[:contacts]
-      )
+
+      if !params[:contacts].nil?
+
+        @involved_property = InvolvedProperty.new(
+          user: current_user, property: @property, favorite:false, contacts: params[:contact])  
+      elsif !params[:favorite].nil?
+
+        @involved_property = InvolvedProperty.new(
+          user: current_user, property: @property, favorite:params[:favorite], contacts: false)  
+      end
     end
     
     if @involved_property.save
@@ -75,7 +85,7 @@ class InvolvedPropertiesController < ApplicationController
    
       active.each do |act|
         act_with_url = { property: act }
-        if act.image.attached?
+        if !act.image.attached?
           url = "sin imagen"
         else
           object = @s3.bucket("getahome").object(act.image.blob.key)
@@ -87,7 +97,7 @@ class InvolvedPropertiesController < ApplicationController
 
       closed.each do |clo|
         clo_with_url = { property: clo }
-        if clo.image.attached?
+        if !clo.image.attached?
           url = "sin imagen"
         else
           object = @s3.bucket("getahome").object(clo.image.blob.key)
