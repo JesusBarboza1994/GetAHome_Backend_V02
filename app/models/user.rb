@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :involved_properties, dependent: :destroy
   has_many :properties, through: :involved_properties, counter_cache: true
   # type 1 - landlord , type 2 - buyer
+  enum user_type: { landlord: 1, seeker: 2 }
   # Authentication methods
   before_create do
     self.token_created_at = Time.current
