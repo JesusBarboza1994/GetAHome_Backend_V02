@@ -39,13 +39,20 @@ class InvolvedPropertiesController < ApplicationController
   def create
     @property = Property.find(params[:property_id])
     inv = InvolvedProperty.where(user:current_user, property:@property)
+    puts "hey"
+    p inv
+    puts "hola"
     if !(inv.length === 0)
+      puts "update"
       update
     else
+      puts "create"
       if !params[:contacts].nil?
+        puts "contact"
         @involved_property = InvolvedProperty.new(
           user: current_user, property: @property, favorite:false, contacts: params[:contacts])  
       elsif !params[:favorite].nil?
+        puts "favorite"
         @involved_property = InvolvedProperty.new(
           user: current_user, property: @property, favorite:params[:favorite], contacts: false)  
       end
