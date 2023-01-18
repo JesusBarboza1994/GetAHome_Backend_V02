@@ -7,11 +7,14 @@ class CreateProperties < ActiveRecord::Migration[7.0]
       t.boolean :pet_allowed
       t.integer :price
       t.integer :mode
-      t.string :address
       t.string :description
       t.integer :property_type
       t.boolean :status
       t.integer :maintenance
+      t.string :district
+      t.string :province
+      t.decimal :latitud
+      t.decimal :longitud
       t.references :user, null: false, foreign_key: true
 
       t.timestamps

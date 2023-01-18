@@ -39,20 +39,14 @@ class InvolvedPropertiesController < ApplicationController
   def create
     @property = Property.find(params[:property_id])
     inv = InvolvedProperty.where(user:current_user, property:@property)
-    puts "hey"
-    p inv
-    puts "hola"
+
     if !(inv.length === 0)
-      puts "update"
       update
     else
-      puts "create"
       if !params[:contacts].nil?
-        puts "contact"
         @involved_property = InvolvedProperty.new(
           user: current_user, property: @property, favorite:false, contacts: params[:contacts])  
       elsif !params[:favorite].nil?
-        puts "favorite"
         @involved_property = InvolvedProperty.new(
           user: current_user, property: @property, favorite:params[:favorite], contacts: false)  
       end
@@ -68,16 +62,8 @@ class InvolvedPropertiesController < ApplicationController
   def update
     @property = Property.find(params[:property_id])
     involved_property = InvolvedProperty.where(user:current_user, property: @property)
-    # permitted = involved_property_params.permit(:contacts, :favorite, :property_id)
-    p involved_property
-    puts "por aquii"
     if !params[:contacts].nil?
-      puts "contacts"
-
-      p params[:contacts]
-      p params[:involved_property]
       involved_property.update(involved_property_params)
-      puts "fin"
     elsif !params[:favorite].nil?
       involved_property.update(involved_property_params)
       

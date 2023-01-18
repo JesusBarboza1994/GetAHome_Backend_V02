@@ -61,11 +61,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_12_215941) do
     t.boolean "pet_allowed"
     t.integer "price"
     t.integer "mode"
-    t.string "address"
     t.string "description"
     t.integer "property_type"
     t.boolean "status"
     t.integer "maintenance"
+    t.string "district"
+    t.string "province"
+    t.decimal "latitud"
+    t.decimal "longitud"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
