@@ -34,12 +34,11 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
     @property.user_id = current_user.id
     if @property.save
-      # @property.images.attach(params[:property][:images])
       url = []
       i=0
-      if(property.images.attached?)
-        property.images.each do |_image|
-          object = @s3.bucket("getahome").object(property.images[i].blob.key)
+      if(@property.images.attached?)
+        @property.images.each do |_image|
+          object = @s3.bucket("getahome").object(@property.images[i].blob.key)
           i = i +1 
           url.push(object.presigned_url(:get, expires_in: 3600))
         end
