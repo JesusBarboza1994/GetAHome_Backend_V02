@@ -11,10 +11,10 @@ class InvolvedPropertiesController < ApplicationController
    
     @favorites.each do |favorite|
       favorite_with_url = { property: favorite }
-      if !favorite.image.attached?
+      if !favorite.images.attached?
         url = "sin imagen"
       else
-        object = @s3.bucket("getahome").object(favorite.image.blob.key)
+        object = @s3.bucket("getahome").object(favorite.images[0].blob.key)
         url = object.presigned_url(:get, expires_in: 3600)
       end
       favorite_with_url[:url] = url
@@ -23,10 +23,10 @@ class InvolvedPropertiesController < ApplicationController
 
     @contacts.each do |contact|
       contact_with_url = { property: contact }
-      if !contact.image.attached?
+      if !contact.images.attached?
         url = "sin imagen"
       else
-        object = @s3.bucket("getahome").object(contact.image.blob.key)
+        object = @s3.bucket("getahome").object(contact.images[0].blob.key)
         url = object.presigned_url(:get, expires_in: 3600)
       end
       contact_with_url[:url] = url
@@ -84,10 +84,10 @@ class InvolvedPropertiesController < ApplicationController
    
       active.each do |act|
         act_with_url = { property: act }
-        if !act.image.attached?
+        if !act.images.attached?
           url = "sin imagen"
         else
-          object = @s3.bucket("getahome").object(act.image.blob.key)
+          object = @s3.bucket("getahome").object(act.images[0].blob.key)
           url = object.presigned_url(:get, expires_in: 3600)
         end
         act_with_url[:url] = url
@@ -96,10 +96,10 @@ class InvolvedPropertiesController < ApplicationController
 
       closed.each do |clo|
         clo_with_url = { property: clo }
-        if !clo.image.attached?
+        if !clo.images.attached?
           url = "sin imagen"
         else
-          object = @s3.bucket("getahome").object(clo.image.blob.key)
+          object = @s3.bucket("getahome").object(clo.images[0].blob.key)
           url = object.presigned_url(:get, expires_in: 3600)
         end
         clo_with_url[:url] = url

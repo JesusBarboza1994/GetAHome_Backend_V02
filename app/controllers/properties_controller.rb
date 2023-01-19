@@ -12,9 +12,14 @@ class PropertiesController < ApplicationController
     properties_with_url = []
     @properties.each do |property|
       property_with_url = { property: property }
-      if(property.image.attached?)
-        object = @s3.bucket("getahome").object(property.image.blob.key)
-        url = object.presigned_url(:get, expires_in: 3600)
+      if(property.images.attached?)
+        url = []
+        i=0
+        property.images.each do |_image|
+          object = @s3.bucket("getahome").object(property.images[i].blob.key)
+          i = i +1 
+          url.push(object.presigned_url(:get, expires_in: 3600))
+        end
       else
         url="sin imagen"
       end
@@ -28,11 +33,21 @@ class PropertiesController < ApplicationController
   def create
     @property = Property.new(property_params)
     @property.user_id = current_user.id
-    if @property.save 
-      @property.image.attach(params[:property][:image])
-      puts "SALIOOOO" if @property.image.attached?
-      object = @s3.bucket("getahome").object(@property.image.blob.key)
-      url = object.presigned_url(:get, expires_in: 3600)
+    puts "hola"
+    if @property.save
+      # @property.images.attach(params[:property][:images])
+      url = []
+      i=0
+      if(property.images.attached?)
+        property.images.each do |_image|
+          object = @s3.bucket("getahome").object(property.images[i].blob.key)
+          i = i +1 
+          url.push(object.presigned_url(:get, expires_in: 3600))
+        end
+      else
+        url = "sin imagen"
+      end
+      
       render json: {property:@property, url: url}, status: :created
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -74,6 +89,6 @@ class PropertiesController < ApplicationController
 
   def property_params
     params.require(:property).permit(:bedrooms, :bathrooms, :area, :pet_allowed,
-                                      :description, :price, :mode, :property_type, :status, :maintenance, :image, :district, :province, :latitud, :longitud)
+                                      :description, :price, :mode, :property_type, :status, :maintenance, {images:[]}, :district, :province, :latitud, :longitud)
   end
 end

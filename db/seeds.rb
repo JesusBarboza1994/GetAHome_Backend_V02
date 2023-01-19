@@ -6,12 +6,12 @@ puts "Seeding properties"
 
 User.create(name:"admin", email:"test2@mail.com", phone:"12345566778", user_type:"landlord", password:"123456");
 
-12.times do |i|
+# 12.times do |i|
 
-  User.create(name:"admin#{i}", email:"test2#{i}@mail.com", phone:"12345566778", user_type:["landlord", "seeker"].sample, password:"123456");
-end
+#   User.create(name:"admin#{i}", email:"test2#{i}@mail.com", phone:"12345566778", user_type:["landlord", "seeker"].sample, password:"123456");
+# end
 
-12.times do |i|
+1.times do |i|
   bedrooms = rand(1..6)
   bathrooms = rand(1..4)
   area = rand(50..1000)
@@ -97,7 +97,7 @@ end
   maintenance = rand(100..500)
   latitud = (rand(-1300..-1000))/100
   longitud = (rand(-7750..-7530))/100
-  user_id = rand(1...12)
+  user_id = 1#rand(1...12)
   property = Property.create(bedrooms: bedrooms, 
                              bathrooms: bathrooms, 
                              area: area, 
@@ -114,15 +114,18 @@ end
                              maintenance: maintenance,
                              user_id: user_id,
                             )
-  property.image.attach(io: File.open("db/images/house#{i+1}.png"), filename: "house#{i+1}.png")
+  property.images.attach(io: File.open("db/images/house#{i+1}.png"), filename: "house#{i+1}.png")
+  property.images.attach(io: File.open("db/images/house#{i+2}.png"), filename: "house#{i+2}.png")
+  property.images.attach(io: File.open("db/images/house#{i+3}.png"), filename: "house#{i+3}.png")
+  property.images.attach(io: File.open("db/images/house#{i+4}.png"), filename: "house#{i+4}.png")
 
 end
 
-puts "Create favorites and contacted"
-50.times do |i|
-  involved = InvolvedProperty.new(user_id:rand(1...12) , property_id:rand(1...12) , favorite: [true, false].sample, contacts: [true, false].sample)
-  find_involved = InvolvedProperty.where(user_id:involved.user_id, property_id:involved.property_id)
-  involved.save() if !find_involved
-end
+# puts "Create favorites and contacted"
+# 50.times do |i|
+#   involved = InvolvedProperty.new(user_id:rand(1...12) , property_id:rand(1...12) , favorite: [true, false].sample, contacts: [true, false].sample)
+#   find_involved = InvolvedProperty.where(user_id:involved.user_id, property_id:involved.property_id)
+#   involved.save() if !find_involved
+# end
 
 puts "Finished"
