@@ -33,7 +33,6 @@ class PropertiesController < ApplicationController
   def create
     @property = Property.new(property_params)
     @property.user_id = current_user.id
-    puts "hola"
     if @property.save
       # @property.images.attach(params[:property][:images])
       url = []
@@ -56,11 +55,18 @@ class PropertiesController < ApplicationController
   
   def show
     @property = Property.find(params[:id])
-    if !@property.image.attached?
+    url=[]
+    i=0
+    if !@property.images.attached?
       render json: { property: @property, url: "sin imagen" }
     else
-      object = @s3.bucket("getahome").object(@property.image.blob.key)
-      render json: { property: @property, url: object.presigned_url(:get, expires_in: 3600) }
+      @property.images.each do |_image|
+        object = @s3.bucket("getahome").object(@property.images[i].blob.key)
+        i = i +1 
+        url.push(object.presigned_url(:get, expires_in: 3600))
+      end
+      # object = @s3.bucket("getahome").object(@property.images.blob.key)
+      render json: { property: @property, url: url }
     end
   end
   

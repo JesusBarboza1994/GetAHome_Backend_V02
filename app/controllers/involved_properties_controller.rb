@@ -14,8 +14,15 @@ class InvolvedPropertiesController < ApplicationController
       if !favorite.images.attached?
         url = "sin imagen"
       else
-        object = @s3.bucket("getahome").object(favorite.images[0].blob.key)
-        url = object.presigned_url(:get, expires_in: 3600)
+        url = []
+        i=0
+        favorite.images.each do |_image|
+          object = @s3.bucket("getahome").object(favorite.images[i].blob.key)
+          i = i +1 
+          url.push(object.presigned_url(:get, expires_in: 3600))
+        end
+        # object = @s3.bucket("getahome").object(favorite.images[0].blob.key)
+        # url = object.presigned_url(:get, expires_in: 3600)
       end
       favorite_with_url[:url] = url
       favorites_with_url << favorite_with_url
@@ -26,8 +33,16 @@ class InvolvedPropertiesController < ApplicationController
       if !contact.images.attached?
         url = "sin imagen"
       else
-        object = @s3.bucket("getahome").object(contact.images[0].blob.key)
-        url = object.presigned_url(:get, expires_in: 3600)
+        url = []
+        i=0
+        contact.images.each do |_image|
+          object = @s3.bucket("getahome").object(contact.images[i].blob.key)
+          i = i +1 
+          url.push(object.presigned_url(:get, expires_in: 3600))
+        end
+
+        # object = @s3.bucket("getahome").object(contact.images[0].blob.key)
+        # url = object.presigned_url(:get, expires_in: 3600)
       end
       contact_with_url[:url] = url
       contacts_with_url << contact_with_url
@@ -87,8 +102,15 @@ class InvolvedPropertiesController < ApplicationController
         if !act.images.attached?
           url = "sin imagen"
         else
-          object = @s3.bucket("getahome").object(act.images[0].blob.key)
-          url = object.presigned_url(:get, expires_in: 3600)
+          url = []
+          i=0
+          act.images.each do |_image|
+            object = @s3.bucket("getahome").object(act.images[i].blob.key)
+            i = i +1 
+            url.push(object.presigned_url(:get, expires_in: 3600))
+          end
+          # object = @s3.bucket("getahome").object(act.images[0].blob.key)
+          # url = object.presigned_url(:get, expires_in: 3600)
         end
         act_with_url[:url] = url
         active_with_url << act_with_url
@@ -99,8 +121,15 @@ class InvolvedPropertiesController < ApplicationController
         if !clo.images.attached?
           url = "sin imagen"
         else
-          object = @s3.bucket("getahome").object(clo.images[0].blob.key)
-          url = object.presigned_url(:get, expires_in: 3600)
+          url = []
+          i=0
+          clo.images.each do |_image|
+            object = @s3.bucket("getahome").object(clo.images[i].blob.key)
+            i = i +1 
+            url.push(object.presigned_url(:get, expires_in: 3600))
+          end
+          # object = @s3.bucket("getahome").object(clo.images[0].blob.key)
+          # url = object.presigned_url(:get, expires_in: 3600)
         end
         clo_with_url[:url] = url
         closed_with_url << clo_with_url
