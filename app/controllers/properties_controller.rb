@@ -88,10 +88,10 @@ class PropertiesController < ApplicationController
 
   def set_s3_client
     @s3 = Aws::S3::Resource.new(region: "us-east-1",
-      access_key_id: ENV["AWS_ACCESS_KEY_ID"],
-      secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"] )
-      # access_key_id: Rails.application.credentials[:aws][:access_key_id],
-      # secret_access_key: Rails.application.credentials[:aws][:secret_access_key] )
+      # access_key_id: ENV["AWS_ACCESS_KEY_ID"],
+      # secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"] )
+      access_key_id: Rails.application.credentials[:aws_access_key_id],
+      secret_access_key: Rails.application.credentials[:aws_secret_access_key] )
   end
 
   def property_params
