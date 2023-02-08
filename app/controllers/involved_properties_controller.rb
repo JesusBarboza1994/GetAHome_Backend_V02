@@ -17,11 +17,11 @@ class InvolvedPropertiesController < ApplicationController
         url = []
         i=0
         favorite.images.each do |_image|
-          object = @s3.bucket("getahome").object(favorite.images[i].blob.key)
+          object = @s3.bucket("get-a-home").object(favorite.images[i].blob.key)
           i = i +1 
           url.push(object.presigned_url(:get, expires_in: 3600))
         end
-        # object = @s3.bucket("getahome").object(favorite.images[0].blob.key)
+        # object = @s3.bucket("get-a-home").object(favorite.images[0].blob.key)
         # url = object.presigned_url(:get, expires_in: 3600)
       end
       favorite_with_url[:url] = url
@@ -36,12 +36,12 @@ class InvolvedPropertiesController < ApplicationController
         url = []
         i=0
         contact.images.each do |_image|
-          object = @s3.bucket("getahome").object(contact.images[i].blob.key)
+          object = @s3.bucket("get-a-home").object(contact.images[i].blob.key)
           i = i +1 
           url.push(object.presigned_url(:get, expires_in: 3600))
         end
 
-        # object = @s3.bucket("getahome").object(contact.images[0].blob.key)
+        # object = @s3.bucket("get-a-home").object(contact.images[0].blob.key)
         # url = object.presigned_url(:get, expires_in: 3600)
       end
       contact_with_url[:url] = url
@@ -105,11 +105,11 @@ class InvolvedPropertiesController < ApplicationController
           url = []
           i=0
           act.images.each do |_image|
-            object = @s3.bucket("getahome").object(act.images[i].blob.key)
+            object = @s3.bucket("get-a-home").object(act.images[i].blob.key)
             i = i +1 
             url.push(object.presigned_url(:get, expires_in: 3600))
           end
-          # object = @s3.bucket("getahome").object(act.images[0].blob.key)
+          # object = @s3.bucket("get-a-home").object(act.images[0].blob.key)
           # url = object.presigned_url(:get, expires_in: 3600)
         end
         act_with_url[:url] = url
@@ -124,11 +124,11 @@ class InvolvedPropertiesController < ApplicationController
           url = []
           i=0
           clo.images.each do |_image|
-            object = @s3.bucket("getahome").object(clo.images[i].blob.key)
+            object = @s3.bucket("get-a-home").object(clo.images[i].blob.key)
             i = i +1 
             url.push(object.presigned_url(:get, expires_in: 3600))
           end
-          # object = @s3.bucket("getahome").object(clo.images[0].blob.key)
+          # object = @s3.bucket("get-a-home").object(clo.images[0].blob.key)
           # url = object.presigned_url(:get, expires_in: 3600)
         end
         clo_with_url[:url] = url
@@ -156,8 +156,8 @@ class InvolvedPropertiesController < ApplicationController
 
   def set_s3_client
     @s3 = Aws::S3::Resource.new(region: "us-east-1",
-      access_key_id: "AKIAYDOFGOCUH2II6ZMY",
-      secret_access_key: "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")
+      access_key_id: Rails.application.credentials[:aws][:access_key_id],
+      secret_access_key: Rails.application.credentials[:aws][:secret_access_key] )
   end
 
 

@@ -16,7 +16,7 @@ class PropertiesController < ApplicationController
         url = []
         i=0
         property.images.each do |_image|
-          object = @s3.bucket("getahome").object(property.images[i].blob.key)
+          object = @s3.bucket("get-a-home").object(property.images[i].blob.key)
           i = i +1 
           url.push(object.presigned_url(:get, expires_in: 3600))
         end
@@ -38,7 +38,7 @@ class PropertiesController < ApplicationController
       i=0
       if(@property.images.attached?)
         @property.images.each do |_image|
-          object = @s3.bucket("getahome").object(@property.images[i].blob.key)
+          object = @s3.bucket("get-a-home").object(@property.images[i].blob.key)
           i = i +1 
           url.push(object.presigned_url(:get, expires_in: 3600))
         end
@@ -60,11 +60,11 @@ class PropertiesController < ApplicationController
       render json: { property: @property, url: "sin imagen" }
     else
       @property.images.each do |_image|
-        object = @s3.bucket("getahome").object(@property.images[i].blob.key)
+        object = @s3.bucket("get-a-home").object(@property.images[i].blob.key)
         i = i +1 
         url.push(object.presigned_url(:get, expires_in: 3600))
       end
-      # object = @s3.bucket("getahome").object(@property.images.blob.key)
+      # object = @s3.bucket("get-a-home").object(@property.images.blob.key)
       render json: { property: @property, url: url }
     end
   end
@@ -88,8 +88,8 @@ class PropertiesController < ApplicationController
 
   def set_s3_client
     @s3 = Aws::S3::Resource.new(region: "us-east-1",
-      access_key_id: "AKIAYDOFGOCUH2II6ZMY",
-      secret_access_key: "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")
+      access_key_id: Rails.application.credentials[:aws][:access_key_id],
+      secret_access_key: Rails.application.credentials[:aws][:secret_access_key] )
   end
 
   def property_params

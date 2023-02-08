@@ -11,7 +11,7 @@ User.create(name:"admin", email:"test2@mail.com", phone:"12345566778", user_type
 #   User.create(name:"admin#{i}", email:"test2#{i}@mail.com", phone:"12345566778", user_type:["landlord", "seeker"].sample, password:"123456");
 # end
 
-1.times do |i|
+3.times do |i|
   bedrooms = rand(1..6)
   bathrooms = rand(1..4)
   area = rand(50..1000)
